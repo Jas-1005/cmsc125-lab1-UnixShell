@@ -2,6 +2,41 @@
 
 An interactive UNIX shell developed for lab1 requirement of the course, CMSC 125 - Operating Systems. 
 
+## PR1
+* **Problem Analysis:** 
+  * implement an interactive command-line interface 
+  * handle background
+* **Solution Architecture:**
+  * command.h
+  * executor.h
+  * parser.h
+  * builtins.h
+  * executor.c
+  * parser.c
+  * builtins.c
+  * main.c
+  * Makefile
+
+* **Timeline:**
+  * Week 1 (Jan 30 - Feb 5): 
+      * problem analysis
+      * design modular structure
+      * populate readme file
+      * initial implementation code
+
+  * Week 2 (Feb 6 - Feb 12): 
+      * functional prototype with core features
+
+  * Week 3 (Feb 13 - Feb 19):
+      * test results
+      * documentation of issues
+
+  * Week 4 (Feb 26): 
+      * program defense
+      * finalize readme file
+      * submit lab1 deliverables  
+
+
 ## Features 
 
 * **Interactive Command Execution:** mysh features a persistent prompt that supports standard UNIX commands.
