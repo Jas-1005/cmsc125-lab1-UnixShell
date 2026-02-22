@@ -3,7 +3,17 @@
 #include <stdbool.h>
 #include "parser.h"
 
-void parse_user_input(char *input, Command *cmd){
+
+char *exclude_quotations(char *ptr){
+    int i, j;
+    for (i = 0 ,j = 0 ; ptr[i] != '\0'; i++){
+        if (ptr[i] != '"') ptr[j++] = ptr[i]; 
+    }
+    ptr[j] = '\0';
+    return ptr;
+}
+
+void parse_user_input(char *input, Command *cmd){// make this return Command
     cmd->command = NULL;
     cmd->input_file = NULL;
     cmd->output_file = NULL;
@@ -30,7 +40,9 @@ void parse_user_input(char *input, Command *cmd){
             cmd->append = false;
         } else if(strcmp(ptr, "&") == 0){
             cmd->background = true;
+            
         } else {
+            if (strchr(ptr, '"') != NULL) exclude_quotations(ptr);
             cmd->args[arg_index++] = ptr;
 
             if(cmd->command == NULL) cmd->command = ptr;
