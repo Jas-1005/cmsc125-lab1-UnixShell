@@ -67,12 +67,12 @@ void execute_user_command(Command cmd, int status){
                 if (fd < 0) { perror("open"); exit(1); }
                 dup2(fd, STDOUT_FILENO);
                 close(fd);
-            } else if (cmd.input_file != NULL) { // Check args[j], not j+1
+            }
+            if (cmd.input_file != NULL) { // Check args[j], not j+1
                 int fd = open(cmd.input_file, O_RDONLY);
-                if (fd >= 0) {
-                    dup2(fd, STDIN_FILENO);
-                    close(fd);
-                } 
+                if (fd < 0) { perror("open"); exit(1); }
+                dup2(fd, STDOUT_FILENO);
+                close(fd);
             }
             execvp(cmd.args[0], cmd.args); 
             exit(127);
