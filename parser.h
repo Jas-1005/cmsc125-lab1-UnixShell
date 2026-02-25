@@ -3,7 +3,7 @@
 #include "command.h"
 
 void parse_user_input(char *input, Command *cmd); //return command, remove pointer
-
 char *exclude_quotations(char *ptr);
+void free_memory(Command *cmd);
 
 #endif
