@@ -53,6 +53,7 @@ int main(){
     Command cmd;
     char input[MAX_COMMAND_LENGTH];
     int status = 0;
+    int job_id = 1;
 
     signal(SIGINT, sig_int); //register signal handler for SIGINT
     while (1){
@@ -76,12 +77,12 @@ int main(){
             continue; //just skip if no command is entered
         }
 
-        execute_user_command(cmd, status);
-        continue;
+        execute_user_command(cmd, status, &job_id);
+        free_memory(&cmd);
 
-        if (signal(SIGINT, sig_int) == SIG_ERR){
-            perror("signal error.");
-        }
+        // if (signal(SIGINT, sig_int) == SIG_ERR){
+        //     perror("signal error.");
+        // }
         }
     return(status);
 }
