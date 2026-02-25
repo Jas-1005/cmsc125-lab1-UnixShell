@@ -31,7 +31,7 @@ void file_redirection(int fd, char file_type[]){
     }
 }
 
-void execute_user_command(Command cmd, int status){ 
+void execute_user_command(Command cmd, int status, int *job_id){
     if (is_builtin_command(cmd)){
         if(strcmp(cmd.args[0], "exit") == 0){
             exit(0);
@@ -81,15 +81,17 @@ void execute_user_command(Command cmd, int status){
             if (cmd.input_file != NULL) { // Check args[j], not j+1
                 int fd = open(cmd.input_file, O_RDONLY);
                 file_redirection(fd, "input");
-                if (fd < 0) { perror("open"); exit(1); }
-                dup2(fd, STDIN_FILENO);
-                close(fd);            }
-            execvp(cmd.args[0], cmd.args); 
+            }
+            execvp(cmd.command, cmd.args); 
+            perror("exec failed");
             exit(127);
         } else {
             //parent process
-            if (cmd.background) printf("[Process running in background, PID: %d]\n", process_id);
-            else waitpid(process_id, &status, 0);
+            if (cmd.background){
+                printf("[%d] Started: %s %s (PID: %d)\n",
+                     *job_id, cmd.command,(cmd.args[1] != NULL)? cmd.args[1] : "", process_id);
+                (*job_id)++;
+            } else waitpid(process_id, &status, 0);
         }
     }
 }
