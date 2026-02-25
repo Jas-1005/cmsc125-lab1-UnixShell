@@ -66,9 +66,31 @@ test: myshell
 		|| echo $(FAIL) "empty input handled"
 
 	@# --- background job ---
-	@echo "sleep 1 &" | ./myshell | grep -q "PID" \
+	@echo "sleep 10 &" | ./myshell | grep -q "PID" \
 		&& echo $(PASS) "background job prints PID" \
 		|| echo $(FAIL) "background job prints PID"
-
+		
+	@# --- edge cases ---
+	@# --- long command lines ---
+	@echo "echo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" | ./myshell | grep -q "aaa" \
+		&& echo $(PASS) "very long command lines" \
+		|| echo $(FAIL) "very long command lines"
+	
+	@# --- commands with many arguments ---
+	@echo "echo a b c d e f g h i j k l m n o p q r s t u v w x y z" | ./myshell | grep -q "z" \
+		&& echo $(PASS) "many arguments" \
+		|| echo $(FAIL) "many arguments"
+		
+	@# --- redirectation to /dev/null ---
+	@echo "ls > /dev/null" | ./myshell \
+		&& echo $(PASS) "redirection to /dev/null" \
+		|| echo $(FAIL) "redirection to /dev/null"
+		
+	@# --- spaces around redirection operators ---
+	@echo "echo spacetest > /tmp/mysh_space.txt" | ./myshell ; \
+		grep -q "spacetest" /tmp/mysh_space.txt \
+		&& echo $(PASS) "spaces around redirection operators" \
+		|| echo $(FAIL) "spaces around redirection operators"
+		
 	@rm -f /tmp/mysh_test.txt
 	@echo "\nDone."
