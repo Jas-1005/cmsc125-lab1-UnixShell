@@ -17,6 +17,20 @@ bool is_builtin_command(Command cmd){
     return false;
 }
 
+void file_redirection(int fd, char file_type[]){
+    if(strcmp(file_type, "output") == 0){
+        if (fd < 0) { perror("open"); exit(1); }
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+    }
+
+    if (strcmp(file_type, "input") == 0){
+        if (fd < 0) { perror("open"); exit(1); }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+    }
+}
+
 void execute_user_command(Command cmd, int status){ 
     if (is_builtin_command(cmd)){
         if(strcmp(cmd.args[0], "exit") == 0){
@@ -59,20 +73,14 @@ void execute_user_command(Command cmd, int status){
         //child process
             if (cmd.output_file != NULL && !cmd.append) {
                 int fd = open(cmd.output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                if (fd < 0) { perror("open"); exit(1); }
-                dup2(fd, STDOUT_FILENO);
-                close(fd);
+                file_redirection(fd, "output");
             } else if (cmd.output_file != NULL && cmd.append ) { // Check args[j], not j+1
                 int fd = open(cmd.output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-                if (fd < 0) { perror("open"); exit(1); }
-                dup2(fd, STDOUT_FILENO);
-                close(fd);
+                file_redirection(fd, "output");
             }
             if (cmd.input_file != NULL) { // Check args[j], not j+1
                 int fd = open(cmd.input_file, O_RDONLY);
-                if (fd < 0) { perror("open"); exit(1); }
-                dup2(fd, STDOUT_FILENO);
-                close(fd);
+                file_redirection(fd, "input");
             }
             execvp(cmd.args[0], cmd.args); 
             exit(127);
