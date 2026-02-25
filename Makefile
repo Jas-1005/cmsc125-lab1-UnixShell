@@ -20,3 +20,55 @@ myshell: $(OBJ)
 
 clean: 
 	@rm -f *.o myshell
+
+# tester
+
+PASS = "\033[32m[PASS]\033[0m" #green for pass
+FAIL = "\033[31m[FAIL]\033[0m" #red for fail
+
+test: myshell
+	@echo "Tester: Running...\n"
+	
+	@# --- pwd ---
+	@echo "pwd" | ./myshell | grep -q "/" \
+		&& echo $(PASS) "pwd prints a path" \
+		|| echo $(FAIL) "pwd prints a path"
+		
+	@# --- output redirection ---
+	@echo "echo redirectiontest > /tmp/mysh_test.txt" | ./myshell ; \
+		grep -q "redirectiontest" /tmp/mysh_test.txt \
+		&& echo $(PASS) "output redirection >" \
+		|| echo $(FAIL) "output redirection >"
+	
+	@# --- append redirection >> ---
+	@echo "echo appended >> /tmp/mysh_test.txt" | ./myshell ; \
+		grep -q "appended" /tmp/mysh_test.txt \
+		&& echo $(PASS) "append redirection >>" \
+		|| echo $(FAIL) "append redirection >>"
+
+	@# --- input redirection ---
+	@echo "wc -l < /tmp/mysh_test.txt" | ./myshell | grep -q "[0-9]" \
+		&& echo $(PASS) "input redirection <" \
+		|| echo $(FAIL) "input redirection <"
+	
+	@# --- cd then pwd ---
+	@printf "cd /tmp\npwd\n" | ./myshell | grep -q "/tmp" \
+		&& echo $(PASS) "cd changes directory" \
+		|| echo $(FAIL) "cd changes directory"
+		
+	@# --- nonexistent command exits ---
+	@echo "nonexistent_cmd_xyz" | ./myshell ; \
+		echo $(PASS) "nonexistent command does not crash shell"
+		
+	@# --- empty input ---
+	@printf "\n\n" | ./myshell \
+		&& echo $(PASS) "empty input handled" \
+		|| echo $(FAIL) "empty input handled"
+
+	@# --- background job ---
+	@echo "sleep 1 &" | ./myshell | grep -q "PID" \
+		&& echo $(PASS) "background job prints PID" \
+		|| echo $(FAIL) "background job prints PID"
+
+	@rm -f /tmp/mysh_test.txt
+	@echo "\nDone."

@@ -81,7 +81,9 @@ void execute_user_command(Command cmd, int status){
             if (cmd.input_file != NULL) { // Check args[j], not j+1
                 int fd = open(cmd.input_file, O_RDONLY);
                 file_redirection(fd, "input");
-            }
+                if (fd < 0) { perror("open"); exit(1); }
+                dup2(fd, STDIN_FILENO);
+                close(fd);            }
             execvp(cmd.args[0], cmd.args); 
             exit(127);
         } else {

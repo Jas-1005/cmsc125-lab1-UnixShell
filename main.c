@@ -56,6 +56,8 @@ int main(){
 
     signal(SIGINT, sig_int); //register signal handler for SIGINT
     while (1){
+        
+        while(waitpid(-1, NULL, WNOHANG) > 0);
         //PROMPT
         printf("\nmysh> ");
         fflush(stdout);
