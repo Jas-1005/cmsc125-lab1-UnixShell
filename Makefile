@@ -20,6 +20,8 @@ myshell: $(OBJ)
 
 clean: 
 	@rm -f *.o myshell
+	@rm -f core *~
+	@rm -f test_out.txt
 
 # tester
 
