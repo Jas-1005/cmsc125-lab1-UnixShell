@@ -55,6 +55,8 @@ void parse_user_input(char *input, Command *cmd){// make this return Command
             if (ptr != NULL) cmd->input_file = strdup(ptr);
             else {
                 fprintf(stderr, "mysh: syntax error, missing input file\n");
+                free_memory(cmd);
+                return;
             } 
 
         } else if(strcmp(ptr, ">>") == 0){
@@ -64,6 +66,8 @@ void parse_user_input(char *input, Command *cmd){// make this return Command
                 cmd->append = true;
             } else {
                 fprintf(stderr, "mysh: syntax error, missing output file\n");
+                free_memory(cmd);
+                return;
             } 
     
             
@@ -74,6 +78,8 @@ void parse_user_input(char *input, Command *cmd){// make this return Command
                 cmd->append = false;
             } else {
                 fprintf(stderr, "mysh: syntax error, missing output file\n");
+                free_memory(cmd);
+                return;
             } 
     
         } else if(strcmp(ptr, "&") == 0){
