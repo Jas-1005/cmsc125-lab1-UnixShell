@@ -31,7 +31,7 @@ void file_redirection(int fd, char file_type[]){
     }
 }
 
-void execute_user_command(Command cmd, int status, int *job_id){
+void execute_user_command(Command cmd, int *status, int *job_id){
     if (is_builtin_command(cmd)){
         if(strcmp(cmd.args[0], "exit") == 0){
             exit(0);
@@ -91,7 +91,7 @@ void execute_user_command(Command cmd, int status, int *job_id){
                 printf("[%d] Started: %s %s (PID: %d)\n",
                      *job_id, cmd.command,(cmd.args[1] != NULL)? cmd.args[1] : "", process_id);
                 (*job_id)++;
-            } else waitpid(process_id, &status, 0);
+            } else waitpid(process_id, status, 0);
         }
     }
 }
