@@ -52,15 +52,30 @@ void parse_user_input(char *input, Command *cmd){// make this return Command
     while(ptr != NULL && arg_index < MAX_ARGS - 1){
         if(strcmp(ptr, "<") == 0){
             ptr = strtok(NULL, " ");
-            cmd->input_file = strdup(ptr);
+            if (ptr != NULL) cmd->input_file = strdup(ptr);
+            else {
+                fprintf(stderr, "mysh: syntax error, missing input file\n");
+            } 
+
         } else if(strcmp(ptr, ">>") == 0){
             ptr = strtok(NULL, " ");
-            cmd->output_file = strdup(ptr);
-            cmd->append = true;
+            if (ptr != NULL){
+                cmd->output_file = strdup(ptr);
+                cmd->append = true;
+            } else {
+                fprintf(stderr, "mysh: syntax error, missing output file\n");
+            } 
+    
+            
         } else if(strcmp(ptr, ">") == 0){
             ptr = strtok(NULL, " ");
-            cmd->output_file = strdup(ptr);
-            cmd->append = false;
+            if (ptr != NULL){
+                cmd->output_file = strdup(ptr);
+                cmd->append = false;
+            } else {
+                fprintf(stderr, "mysh: syntax error, missing output file\n");
+            } 
+    
         } else if(strcmp(ptr, "&") == 0){
             cmd->background = true;
             
