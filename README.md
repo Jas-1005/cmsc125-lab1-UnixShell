@@ -2,18 +2,21 @@
 
 An interactive UNIX shell developed for lab1 requirement of the course, CMSC 125 - Operating Systems. 
 
+# Group Members
+  * Eleah Joy Melchor
+  * Jasmine Magadan
+
 ## PR1
 * **Problem Analysis:** 
   * implement an interactive command-line interface 
-  * handle background
+  * handle background processes
+
 * **Solution Architecture:**
   * command.h
   * executor.h
   * parser.h
-  * builtins.h
   * executor.c
   * parser.c
-  * builtins.c
   * main.c
   * Makefile
 
@@ -47,7 +50,7 @@ An interactive UNIX shell developed for lab1 requirement of the course, CMSC 125
   * `>>`: Append
   * `<`: Redirect input
 * **Background Execution:** Support for the & operator to execute processes asynchronously.
-
+* **Memory Cleanup and Management:** Cleanup for leakage memory prevention 
 ## Getting Started
 
 ### Prerequisites
@@ -56,16 +59,16 @@ To compile and run this shell, you need:
 
 * A UNIX-like environment (e.g., Linux, MacOS, or WSL).
 * The gcc compiler.
-* make
+* make utility
 
 ### Step 1: Clone and Compile
 
 1. Clone this repository or download the source code.
 2. Open your terminal in the project folder.
-3. Compile the source code using gcc:
+3. Compile and build the executable by using the provided make file.
 
 ```bash
-gcc -Wall -o mysh mysh.c
+make 
 ```
 
 ### Step 2: Running the Shell
@@ -73,31 +76,38 @@ gcc -Wall -o mysh mysh.c
 Start the shell by executing the compiled binary:
 
 ```bash
-./mysh
+./myshell
 ```
-
 ### Step 3: Usage Examples
 
 * **Simple command:** ```ls -lo```
 * **Redirection:** ```ls > [filename].txt```
-* **Background:** ```sleep 10&```
+* **Background:** ```sleep 10 &```
 * **Built-in:** ```cd /tmp```
 
-## Roadmap by Features
+### Step 3: Other Commands
+Run automated tests of the shell by executing the command:
 
----
+```bash
+make test
+```
 
-## Compatibility
+Clean build and test files by executing the command:
 
-**Tested on:** 
-**Environment:**
+```bash
+make clean
+```
+
+## Known Bugs & Limitations
+* **Requires spacing around redirection operators (parser currently uses strtok)**
+* **Does not support multiple piped commands**
 
 ## Development
+Development Period : Jan 28 - Feb 25, 2026
+Tested on: Linux Kernel 6.6.87.2-microsoft-standard-WSL2
+Compiler: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
 
 This lab is written in C and interfaces directly with UNIX syscalls.
 
-### Core System Calls Used
-
---
 
 
