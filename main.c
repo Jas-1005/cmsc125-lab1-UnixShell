@@ -74,10 +74,11 @@ int main(){
         parse_user_input(input, &cmd);
 
         if (cmd.command == NULL) {
+            free_memory(&cmd);
             continue; //just skip if no command is entered
         }
 
-        execute_user_command(cmd, status, &job_id);
+        execute_user_command(cmd, &status, &job_id);
         free_memory(&cmd);
 
         // if (signal(SIGINT, sig_int) == SIG_ERR){
